@@ -11,6 +11,7 @@ using FilmRatingApp.Views;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.UI.Xaml;
+using Microsoft.UI.Xaml.Controls;
 
 namespace FilmRatingApp;
 
@@ -25,6 +26,14 @@ public partial class App : Application
     public IHost Host
     {
         get;
+    }
+
+    public static FrameworkElement MainRoot
+    {
+        get
+        {
+            return MainWindow.Content as FrameworkElement;
+        }
     }
 
     public static T GetService<T>()
@@ -100,4 +109,6 @@ public partial class App : Application
 
         await App.GetService<IActivationService>().ActivateAsync(args);
     }
+
+
 }

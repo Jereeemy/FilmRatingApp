@@ -15,6 +15,7 @@ public class PageService : IPageService
     public PageService()
     {
         Configure<HomeViewModel, HomePage>();
+      
         Configure<UtilisateurViewModel, UtilisateurPage>();
         Configure<FilmViewModel, FilmPage>();
         Configure<NotesViewModel, NotesPage>();
