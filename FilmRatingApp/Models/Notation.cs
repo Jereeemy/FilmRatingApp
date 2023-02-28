@@ -8,20 +8,20 @@ namespace FilmRatingApp.Models;
 
 public class Notation
 {
-    private int utl_id;
+    /*private int utl_id;
     private int? flm_id;
     private int? not_note;
-/*
+*//*
     private int utilisateurId;
     private int? filmId;
     private int? note;*/
 
     /*[ForeignKey("FilmId")]//récupère l'ID de l'autre table
-    [InverseProperty("NotesFilm")]*/
+    [InverseProperty("NotesFilm")]*//*
     public Film FilmNote { get; set; } = null!;
 
-    /*[ForeignKey("UtilisateurId")]
-    [InverseProperty("NotesUtilisateur")]*/
+    *//*[ForeignKey("UtilisateurId")]
+    [InverseProperty("NotesUtilisateur")]*//*
     public Utilisateur UtilisateurNotant { get; set; } = null!;
 
     
@@ -79,6 +79,6 @@ public class Notation
     public override int GetHashCode()
     {
         return HashCode.Combine(this.FilmNote, this.UtilisateurNotant, this.UtilisateurId, this.FilmId, this.Note);
-    }
+    }*/
 }
 
