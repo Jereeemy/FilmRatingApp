@@ -6,59 +6,113 @@ using System.Net.Http.Json;
 using System.Text;
 using System.Threading.Tasks;
 using FilmRatingApp.Models;
+using Microsoft.AspNetCore.Mvc;
 
 namespace FilmRatingApp.Services;
-internal class WSService : IService
+public class WSService : IService
 {
 
     private HttpClient client;
-    public const string nomControlleur = "/api/series";
 
     public WSService(string url)
     {
         client = new HttpClient();
-        client.BaseAddress = new Uri(url);
+        client.BaseAddress = new Uri(url); //"http://localhost:7153/"
         client.DefaultRequestHeaders.Accept.Clear();
         client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
     }
 
-    public async Task<List<Utilisateur>> GetUtilisateursAsync(string nomControleur)
+    public async Task<List<Utilisateur>> GetUtilisateursAsync(string nomControlleur)
     {
         try
         {
-            return await client.GetFromJsonAsync<List<Utilisateur>>(nomControleur);
+            return await client.GetFromJsonAsync<List<Utilisateur>>(nomControlleur);
         }
-        catch (Exception e)
-        {
-            Console.WriteLine(e);
-            return null;
-        }
-    }
 
-    public async Task<Utilisateur> GetUtilisateurFromAsync<T>(string nomControleur, T value)
-    {
-        try
-        {
-            return await client.GetFromJsonAsync<Utilisateur>($"{nomControleur}/{value}");
-        }
         catch (Exception)
         {
             return null;
         }
     }
 
-    public async Task<Utilisateur> GetUtilisateurFromMailAsync(string nomControleur, String mail)
+    public async Task<ActionResult<Utilisateur>> GetUtilisateurByIdAsync(string nomControlleur, int id)
     {
         try
         {
-            Console.WriteLine($"{nomControleur}/{mail}");
-            return await GetUtilisateurFromAsync(nomControleur, mail);
+            return await client.GetFromJsonAsync<Utilisateur>(nomControlleur + "/" + id);
         }
+
         catch (Exception)
         {
             return null;
         }
     }
+
+    public async Task<ActionResult<Utilisateur>> GetUtilisateurByEmailAsync(string nomControlleur, string email)
+    {
+        try
+        {
+            return await client.GetFromJsonAsync<Utilisateur>(nomControlleur + "/" + email);
+        }
+
+        catch (Exception)
+        {
+            return null;
+        }
+    }
+
+    public async Task<bool> PutUtilisateurAsync(string nomControlleur, int id, Utilisateur utilisateur)
+    {
+        try
+        {
+            var reponse = await client.PutAsJsonAsync(nomControlleur + "/" + id, utilisateur);
+            reponse.EnsureSuccessStatusCode();
+            if (reponse.IsSuccessStatusCode)
+                return true;
+            return false;
+        }
+
+        catch (Exception)
+        {
+            return false;
+        }
+    }
+
+    public async Task<ActionResult<bool>> PostUtilisateurAsync(string nomControlleur, Utilisateur utilisateur)
+    {
+        try
+        {
+            var reponse = await client.PostAsJsonAsync(nomControlleur, utilisateur);
+            reponse.EnsureSuccessStatusCode();
+            if (reponse.IsSuccessStatusCode)
+                return true;
+            return false;
+        }
+
+        catch (Exception)
+        {
+            return false;
+        }
+    }
+
+    public async Task<bool> DeleteUtilisateurAsync(string nomControlleur, int id)
+    {
+        try
+        {
+            var reponse = await client.DeleteAsync(nomControlleur + "/" + id);
+            reponse.EnsureSuccessStatusCode();
+            if (reponse.IsSuccessStatusCode)
+                return true;
+            return false;
+        }
+
+        catch (Exception)
+        {
+            return false;
+        }
+    }
+
+
 
 
 }
