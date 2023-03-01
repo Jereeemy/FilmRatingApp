@@ -8,6 +8,10 @@ namespace FilmRatingApp.Models;
 
 public partial class Utilisateur
 {
+
+  
+    
+
     public int UtilisateurId
     {
         get; set;

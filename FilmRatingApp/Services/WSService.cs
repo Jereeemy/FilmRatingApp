@@ -95,6 +95,7 @@ public class WSService : IService
         }
     }
 
+
     public async Task<bool> DeleteUtilisateurAsync(string nomControlleur, int id)
     {
         try
