@@ -6,30 +6,8 @@ using System.Threading.Tasks;
 
 namespace FilmRatingApp.Models;
 
-public class Utilisateur
+public partial class Utilisateur
 {
-
-    public Utilisateur()
-    {
-    }
-    public Utilisateur(int utilisateurId, string? nom, string? prenom, string? mobile, string? mail, string? pwd, string? rue, string? codePostal, string? ville, string? pays, float? latitude, float? longitude, DateTime dateCreation, ICollection<Notation>? notesUtilisateur)
-    {
-        UtilisateurId = utilisateurId;
-        Nom = nom;
-        Prenom = prenom;
-        Mobile = mobile;
-        Mail = mail;
-        Pwd = pwd;
-        Rue = rue;
-        CodePostal = codePostal;
-        Ville = ville;
-        Pays = pays;
-        Latitude = latitude;
-        Longitude = longitude;
-        DateCreation = dateCreation;
-        NotesUtilisateur = notesUtilisateur;
-    }
-
     public int UtilisateurId
     {
         get; set;
@@ -99,6 +77,7 @@ public class Utilisateur
     {
         get; set;
     }
+
 
 
 }

@@ -6,13 +6,13 @@ using Microsoft.UI.Xaml.Controls;
 
 namespace FilmRatingApp.ViewModels;
 
-public class HomeViewModel : ObservableObject
+public class HomeViewModel : ObservableRecipient //ObservableObject
 {
     public HomeViewModel()
     {
     }
 
-    private ObservableCollection<Utilisateur> utilisateurs;
+    /*private ObservableCollection<Utilisateur> utilisateurs;
 
     public ObservableCollection<Utilisateur> Utilisateurs
     {
@@ -48,5 +48,5 @@ public class HomeViewModel : ObservableObject
 
         erreur.XamlRoot = App.MainRoot.XamlRoot;
         await erreur.ShowAsync();
-    }
+    }*/
 }

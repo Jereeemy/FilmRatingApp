@@ -3,13 +3,26 @@ using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 using FilmRatingApp.Models;
 using FilmRatingApp.Services;
+using Microsoft.UI.Xaml.Controls;
 
 namespace FilmRatingApp.ViewModels;
 
 
-public class UtilisateurViewModel : HomeViewModel
+public class UtilisateurViewModel : ObservableObject
 {
     public IRelayCommand BtnSearchUtilisateurCommand
+    {
+        get;
+    }
+    public IRelayCommand BtnModifyUtilisateurCommand
+    {
+        get;
+    }
+    public IRelayCommand BtnClearUtilisateurCommand
+    {
+        get;
+    }
+    public IRelayCommand BtnAddUtilisateurCommand
     {
         get;
     }
@@ -18,6 +31,9 @@ public class UtilisateurViewModel : HomeViewModel
     {
         UtilisateurSearch = new Utilisateur();
         BtnSearchUtilisateurCommand = new RelayCommand(SearchUserOnAction);
+        BtnModifyUtilisateurCommand = new RelayCommand(ModifyUserOnAction);
+        BtnClearUtilisateurCommand = new RelayCommand(ClearUserOnAction);
+        BtnAddUtilisateurCommand = new RelayCommand(AddUserOnAction);
     }
 
     private string searchMail;
@@ -53,10 +69,49 @@ public class UtilisateurViewModel : HomeViewModel
         WSService service = new WSService("https://localhost:7001");
         var result = await service.GetUtilisateurByEmailAsync("api/Utilisateurs/GetByEmail/GetByEmail", SearchMail);
         if (result == null)
-            DisplayErreurDialog("Série non trouvée !", "Erreur");
+            DisplayDialog("Utilisateur non trouvé !", "Erreur");
         else
             UtilisateurSearch = result.Value;
     }
 
+    public async void ModifyUserOnAction()
+    {
+        WSService service = new WSService("https://localhost:7001");
+        var result = await service.PutUtilisateurAsync("api/Utilisateurs/PutUtilisateur", UtilisateurSearch.UtilisateurId, UtilisateurSearch);
+        if (result == false)
+            DisplayDialog("Utilisateur non modifié !", "Erreur");
+        else
+            DisplayDialog("Utilisateur " + UtilisateurSearch.Nom + " modifié avec succès !", "Information");
+    }
+
+    public void ClearUserOnAction()
+    {
+        SearchMail = "";
+        UtilisateurSearch = new Utilisateur();
+        DisplayDialog("Champs vidés avec succès !", "Zer gut");
+    }
+
+    public async void AddUserOnAction()
+    {
+        WSService service = new WSService("https://localhost:7001");
+        var result = await service.PostUtilisateurAsync("api/Utilisateurs/PostUtilisateur", UtilisateurSearch);
+        if (result == false)
+            DisplayDialog("Utilisateur non créé !", "Erreur");
+        else
+            DisplayDialog("Utilisateur " + UtilisateurSearch.Nom + " créé avec succès !", "Information");
+    }
+
+    public async void DisplayDialog(string content, string title)
+    {
+        ContentDialog erreur = new ContentDialog()
+        {
+            Title = title,
+            Content = content,
+            CloseButtonText = "Ok"
+        };
+
+        erreur.XamlRoot = App.MainRoot.XamlRoot;
+        await erreur.ShowAsync();
+    }
 }
 
